@@ -8,7 +8,16 @@ const CountryDetails = ({ countries }) => {
   const country = countries.find(
     (pays) => pays.alpha3Code === params.alpha3Code
   );
+
+  const borders = country.borders.map((countryCode) => {
+    const foundCountry = countries.find(
+      (country) => country.alpha3Code === countryCode
+    );
+    return foundCountry.name.common;
+  });
+
   console.log(country);
+
   return (
     <div>
       <h1>{country.name.common}</h1>
@@ -24,7 +33,18 @@ const CountryDetails = ({ countries }) => {
         <p>Area : {country.area} km2</p>
       </div>
       <div>
-        <p>Borders : {country.borders}</p>
+        <p>Borders</p>
+        {borders.length === 0 ? (
+          <p>{country.name.common} has no bordering countries</p>
+        ) : (
+          borders.map((c, i) => {
+            return (
+              <li key={c}>
+                <Link to={`/${country.borders[i]}`}>{c}</Link>
+              </li>
+            );
+          })
+        )}
       </div>
     </div>
   );
